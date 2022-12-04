@@ -24,5 +24,9 @@
   ::remove-card
   (fn [db [_ rank suit]]
     (let [old-cards (:selected-cards db)]
-      (assoc db :selected-cards (remove #(= % {:suit suit :rank rank}) old-cards))
-      )))
+      (assoc db :selected-cards (remove #(= % {:suit suit :rank rank}) old-cards)))))
+
+(re-frame/reg-event-db
+  ::set-effort
+  (fn [db [_ effort]]
+    (assoc db :effort effort)))

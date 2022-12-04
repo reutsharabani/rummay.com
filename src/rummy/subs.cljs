@@ -5,3 +5,7 @@
 (re-frame/reg-sub
  ::selected-cards
  :selected-cards)
+
+(re-frame/reg-sub
+  ::effort
+  :effort)

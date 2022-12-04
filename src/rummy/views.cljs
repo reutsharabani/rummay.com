@@ -52,10 +52,24 @@
                                 ^{:key [rank suit]}
                                 [card {:rank (inc rank) :suit suit}])]))))
 
+(defn effort-picker []
+  (let [effort (re-frame/subscribe [::subs/effort])]
+    [:div
+     [:label "effort"
+      [:input {:type "number"
+               :min 100
+               :max 3000
+               :step 50
+               :value @effort
+               :on-change (fn [e]
+                            (let [effort (-> e .-target .-value js/parseInt)]
+                              (.log js/console effort)
+                              (re-frame/dispatch [::events/set-effort effort])))}]]]))
+
 (defn solution []
   (let [selected-cards (re-frame/subscribe [::subs/selected-cards])
         {valid true
-         invalid false} (rummy/solve @selected-cards)]
+         invalid false} (rummy/solve @selected-cards :effort (:effort (deref re-frame.db/app-db)) )]
     [:div {:style {:display "flex"}}
      (into [:div {:style {:background-color "lightgreen"
                           :width "50%"}} [:p "valid"]]
@@ -67,12 +81,12 @@
                         (map solution-card)))))
      [:div {:style {:background-color "lightsalmon"
                     :width "50%"}} [:p "invalid"]
-             (into [:div {:style {:display "flex"}}]
-                   (->> invalid
-                        (into [] cat)
-                        (sort-by :rank)
-                        (sort-by :suit)
-                        (map solution-card)))]]))
+      (into [:div {:style {:display "flex"}}]
+            (->> invalid
+                 (into [] cat)
+                 (sort-by :rank)
+                 (sort-by :suit)
+                 (map solution-card)))]]))
 
 (defn reset-button []
   [:input {:type "button"
@@ -83,4 +97,5 @@
   [:div
    [card-picker]
    [reset-button]
+   [effort-picker]
    [solution]])

@@ -58,7 +58,8 @@
     (apply min-key rank-solution solutions)))
 
 (defn solve
-  [cards]
+  [cards & {:keys [effort]
+            :or {effort 100}}]
   (let [cards-left (atom (->> cards
                               (sort-by :suit)
                               (sort-by :rank)))
@@ -71,7 +72,7 @@
         (reset! cards-left rest-of-cards)
         (reset! solutions (->> new-solutions
                                (sort-by rank-solution)
-                               (take 100)))
+                               (take effort)))
         (when (empty? rest-of-cards)
           (let [w (best new-solutions)]
             (.log js/console (str w))
