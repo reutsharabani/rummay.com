@@ -68,8 +68,9 @@
 
 (defn solution []
   (let [selected-cards (re-frame/subscribe [::subs/selected-cards])
+        effort (re-frame/subscribe [::subs/effort])
         {valid true
-         invalid false} (rummy/solve @selected-cards :effort (:effort (deref re-frame.db/app-db)) )]
+         invalid false} (rummy/solve @selected-cards :effort @effort)]
     [:div {:style {:display "flex"}}
      (into [:div {:style {:background-color "lightgreen"
                           :width "50%"}} [:p "valid"]]
