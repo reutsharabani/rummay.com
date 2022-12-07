@@ -6,4 +6,4 @@ available in rummay.com
 2. increase effort to try harder (increases cpu usage and response time)
 3. click on cards to remove them from selected cards
 
-[preview](preview.png)
+![preview](preview.png)
